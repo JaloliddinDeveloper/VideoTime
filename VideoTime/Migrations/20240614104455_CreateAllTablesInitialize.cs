@@ -4,8 +4,6 @@
 //==================================================
 using Microsoft.EntityFrameworkCore.Migrations;
 
-#nullable disable
-
 namespace VideoTime.Migrations
 {
     public partial class CreateAllTablesInitialize : Migration
