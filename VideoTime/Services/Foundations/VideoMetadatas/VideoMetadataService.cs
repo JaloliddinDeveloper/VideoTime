@@ -8,7 +8,7 @@ using VideoTime.Models.VideoMetadatas;
 
 namespace VideoTime.Services.Foundations.VideoMetadatas
 {
-    public class VideoMetadataService:IVideoMetadataService
+    public partial class VideoMetadataService:IVideoMetadataService
     {
         private readonly IStorageBroker storageBroker;
         private readonly ILoggingBroker loggingBroker;
@@ -20,7 +20,11 @@ namespace VideoTime.Services.Foundations.VideoMetadatas
             this.storageBroker = storageBroker;
             this.loggingBroker = loggingBroker;
         }
-        public async ValueTask<VideoMetadata> AddVideoMetadataAsync(VideoMetadata videoMetadata)=>
-          await this.storageBroker.InsertVideoMetadataAsync(videoMetadata);       
+        public ValueTask<VideoMetadata> AddVideoMetadataAsync(VideoMetadata videoMetadata) =>
+             TryCatch(async () =>
+             {
+                 ValidationVideoMetadataNutNull(videoMetadata);
+                 return await this.storageBroker.InsertVideoMetadataAsync(videoMetadata);
+             });
     }
 }
