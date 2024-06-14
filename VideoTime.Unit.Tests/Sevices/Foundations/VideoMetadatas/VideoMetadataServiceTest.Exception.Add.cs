@@ -96,5 +96,45 @@ namespace VideoTime.Unit.Tests.Sevices.Foundations.VideoMetadatas
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
+        [Fact]
+        public async Task ShouldThrowExceptionOnAddIfServiceErrorOccurs()
+        {
+            //given
+            VideoMetadata someVideoMetadata = CreateRandomVideoMetadata();
+            var exception = new Exception();
+
+            FailedVideoMetadataServiceException failedVideoMetadataServiceException =
+                new("Unexpected error of Video Metadata occured",
+                    exception);
+
+            VideoMetadataDependencyServiceException expectedVideoMetadataDependencyServiceException =
+                new("Unexpected service error occured. Contact support.",
+                    failedVideoMetadataServiceException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.InsertVideoMetadataAsync(someVideoMetadata))
+                    .ThrowsAsync(exception);
+
+            //when
+            ValueTask<VideoMetadata> AddVideoMetadataTask =
+                this.videoMetadataService.AddVideoMetadataAsync(someVideoMetadata);
+
+            VideoMetadataDependencyServiceException actualVideoMetadataDependencyServiceException =
+                await Assert.ThrowsAsync<VideoMetadataDependencyServiceException>(AddVideoMetadataTask.AsTask);
+
+            //then
+            actualVideoMetadataDependencyServiceException.Should().BeEquivalentTo(expectedVideoMetadataDependencyServiceException);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertVideoMetadataAsync(It.IsAny<VideoMetadata>()),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(expectedVideoMetadataDependencyServiceException))),
+                    Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
