@@ -43,6 +43,24 @@ namespace VideoTime.Services.Foundations.VideoMetadatas
 
                 throw CreateAndLogDuplicateKeyException(alreadyExistVideoMetadataException);
             }
+            catch (Exception exception)
+            {
+                FailedVideoMetadataServiceException failedVideoMetadataServiceException =
+                    new("Unexpected error of Video Metadata occured",
+                        exception);
+
+                throw CreateAndLogVideoMetadataDependencyServiceErrorOccurs(failedVideoMetadataServiceException);
+            }
+        }
+        private VideoMetadataDependencyServiceException CreateAndLogVideoMetadataDependencyServiceErrorOccurs(Xeption exception)
+        {
+            VideoMetadataDependencyServiceException videoMetadataDependencyServiceException =
+                new("Unexpected service error occured. Contact support.",
+                    exception);
+
+            this.loggingBroker.LogError(videoMetadataDependencyServiceException);
+
+            return videoMetadataDependencyServiceException;
         }
 
         private VideoMetadataDependencyValidationException CreateAndLogDuplicateKeyException(Xeption exception)
