@@ -19,12 +19,12 @@ namespace VideoTime.Unit.Tests.Sevices.Foundations.VideoMetadatas
 
             var failedVideoMetadataStorageException =
                 new FailedVideoMetadataStorageException(
-                    "Failed Video Metadata storage error occured, please contact support.",
+                    "Failed Video Metadata storage error occured, please contact support",
                         sqlException);
 
             VideoMetadataDependencyException expectedVideoMetadataDependencyException =
                 new VideoMetadataDependencyException(
-                    "Video Metadata dependency exception error occured, please contact support.",
+                    "Video metadata error occured, fix the errors and try again",
                         failedVideoMetadataStorageException);
 
             this.storageBrokerMock.Setup(broker =>
