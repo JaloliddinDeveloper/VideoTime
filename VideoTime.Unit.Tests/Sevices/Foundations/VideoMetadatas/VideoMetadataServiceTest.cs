@@ -3,11 +3,13 @@
 // Free To Use To Find Comfort And Peace
 //==================================================
 using Moq;
+using System.Linq.Expressions;
 using Tynamix.ObjectFiller;
 using VideoTime.Brokers.Loggings;
 using VideoTime.Brokers.Storages;
 using VideoTime.Models.VideoMetadatas;
 using VideoTime.Services.Foundations.VideoMetadatas;
+using Xeptions;
 
 namespace VideoTime.Unit.Tests.Sevices.Foundations.VideoMetadatas
 {
@@ -26,6 +28,10 @@ namespace VideoTime.Unit.Tests.Sevices.Foundations.VideoMetadatas
                 (storageBroker: this.storageBrokerMock.Object,
                 loggingBroker:this.loggingBrokerMock.Object);
         }
+
+        private Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException) =>
+          actualException => actualException.SameExceptionAs(expectedException);
+
         private static DateTimeOffset GetRandomDateTime() =>
            new DateTimeRange(earliestDate: DateTime.UnixEpoch).GetValue();
 
