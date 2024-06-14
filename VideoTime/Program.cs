@@ -2,7 +2,9 @@
 // Copyright (c) Coalition Of Good-Hearted Engineers
 // Free To Use To Find Comfort And Peace
 //==================================================
+using VideoTime.Brokers.Storages;
 using VideoTime.Components;
+using VideoTime.Services.Foundations.VideoMetadatas;
 public class Program
 {
     private static void Main(string[] args)
@@ -11,6 +13,8 @@ public class Program
 
         builder.Services.AddRazorComponents()
             .AddInteractiveServerComponents();
+        builder.Services.AddTransient<IStorageBroker, StorageBroker>();
+        builder.Services.AddTransient<IVideoMetadataService,VideoMetadataService>();
 
         var app = builder.Build();
 
