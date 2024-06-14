@@ -4,6 +4,7 @@
 //==================================================
 using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using VideoTime.Models.Exceptions;
 using VideoTime.Models.VideoMetadatas;
 using Xeptions;
@@ -29,59 +30,61 @@ namespace VideoTime.Services.Foundations.VideoMetadatas
             }
             catch (SqlException sqlException)
             {
-                FailedVideoMetadataStorageException failedVideoMetadataStorageException =
-                    new("Failed Video Metadata storage error occured, please contact support",
-                        sqlException);
-
+                var failedVideoMetadataStorageException =
+                new FailedVideoMetadataStorageException(
+                    message: "Failed video metadata error occured, cotact support",
+                    innerException: sqlException);
                 throw CreateAndLogCriticalDependencyException(failedVideoMetadataStorageException);
             }
             catch (DuplicateKeyException duplicateKeyException)
             {
-                AlreadyExistVideoMetadataException alreadyExistVideoMetadataException
-                    = new("Video Metadata already exist, please try again",
-                        duplicateKeyException);
+                var alreadyExistVideoMetadataException =
+                 new AlreadyExistVideoMetadataException(
+                     message: "VideoMetadata already exist",
+                      innerException: duplicateKeyException);
+                throw CreateAndDependencyValidationException(alreadyExistVideoMetadataException);
+            }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                LockedVideoMetadataException lockedVideoMetadataException = new LockedVideoMetadataException(
+                    "Video Metadata is locked, please try again",
+                        dbUpdateConcurrencyException);
 
-                throw CreateAndLogDuplicateKeyException(alreadyExistVideoMetadataException);
+                throw CreateAndLogDependencyValidationException(lockedVideoMetadataException);
+            }
+            catch (DbUpdateException databaseUpdateException)
+            {
+                var failedVideoMetadataStorageException = new FailedVideoMetadataStorageException(
+                    message: "Failed video metadata error occured, contact support",
+                    innerException: databaseUpdateException);
+
+                throw CreateAndLogDependencyException(failedVideoMetadataStorageException);
             }
             catch (Exception exception)
             {
-                FailedVideoMetadataServiceException failedVideoMetadataServiceException =
-                    new("Unexpected error of Video Metadata occured",
-                        exception);
+                var failedVideoMetadataServiceException =
+                    new FailedVideoMetadataServiceException(
+                        message: "Failed guest service error occurred,contact support",
+                        innerException: exception);
 
-                throw CreateAndLogVideoMetadataDependencyServiceErrorOccurs(failedVideoMetadataServiceException);
+                throw CreateAndLogServiseException(failedVideoMetadataServiceException);
             }
         }
-        private VideoMetadataDependencyServiceException CreateAndLogVideoMetadataDependencyServiceErrorOccurs(Xeption exception)
+        private VideoMetadataServiceException CreateAndLogServiseException(Xeption exception)
         {
-            VideoMetadataDependencyServiceException videoMetadataDependencyServiceException =
-                new("Unexpected service error occured. Contact support.",
-                    exception);
-
-            this.loggingBroker.LogError(videoMetadataDependencyServiceException);
-
-            return videoMetadataDependencyServiceException;
+            var videoMetadataServiceException =
+                new VideoMetadataServiceException(message: "Video metadata service error occurred,contact support", innerException: exception);
+            this.loggingBroker.LogError(videoMetadataServiceException);
+            return videoMetadataServiceException;
         }
-
-        private VideoMetadataDependencyValidationException CreateAndLogDuplicateKeyException(Xeption exception)
-        {
-            VideoMetadataDependencyValidationException videoMetadataDependencyValidationException =
-                new("Video Metadata dependency error occured. Fix errors and try again",
-                    exception);
-            this.loggingBroker.LogError(videoMetadataDependencyValidationException);
-
-            return videoMetadataDependencyValidationException;
-        }
-
         private VideoMetadataDependencyException CreateAndLogCriticalDependencyException(Xeption exception)
         {
-            VideoMetadataDependencyException videoMetadataDependencyException =
-                new("Video Metadata dependency exception error occured, please contact support",
-                    exception);
-
+            var videoMetadataDependencyException =
+              new VideoMetadataDependencyException(
+                  message: "Video metadata error occured, fix the errors and try again",
+                  innerException: exception);
             this.loggingBroker.LogCritical(videoMetadataDependencyException);
-
-            return videoMetadataDependencyException;
+            throw videoMetadataDependencyException;
         }
         private VideoMetadataValidationException CreateAndLogValidationException(Xeption exception)
         {
@@ -93,6 +96,34 @@ namespace VideoTime.Services.Foundations.VideoMetadatas
             this.loggingBroker.LogError(videoMetadataValidationException);
             return videoMetadataValidationException;
         }
+        public VideoMetadataDependencyValidationException CreateAndDependencyValidationException(Xeption exception)
+        {
+            var videoMetadataDependencyValidationException =
+                 new VideoMetadataDependencyValidationException(
+                     message: "Video metadata Dependency validation error occured,fix the errors and try again",
+                     innerException: exception);
+            this.loggingBroker.LogError(videoMetadataDependencyValidationException);
+            return videoMetadataDependencyValidationException;
+        }
+        private Exception CreateAndLogDependencyException(Xeption exception)
+        {
+            var videoMetadataDependencyException = new VideoMetadataDependencyException(
+                message: "Video metadata dependency error occured, fix the errors and try again",
+                innerException: exception);
 
+            this.loggingBroker.LogError(videoMetadataDependencyException);
+
+            return videoMetadataDependencyException;
+        }
+        private VideoMetadataDependencyValidationException CreateAndLogDependencyValidationException(Xeption exception)
+        {
+            var videoMetadataDependencyValidationException = new VideoMetadataDependencyValidationException(
+                "Video metadata Dependency validation error occured,fix the errors and try again",
+                    exception);
+
+            this.loggingBroker.LogError(videoMetadataDependencyValidationException);
+
+            return videoMetadataDependencyValidationException;
+        }
     }
 }

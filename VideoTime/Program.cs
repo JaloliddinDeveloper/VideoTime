@@ -2,6 +2,7 @@
 // Copyright (c) Coalition Of Good-Hearted Engineers
 // Free To Use To Find Comfort And Peace
 //==================================================
+using VideoTime.Brokers.DateTimes;
 using VideoTime.Brokers.Loggings;
 using VideoTime.Brokers.Storages;
 using VideoTime.Components;
@@ -41,5 +42,6 @@ public class Program
         builder.Services.AddTransient<IStorageBroker, StorageBroker>();
         builder.Services.AddTransient<IVideoMetadataService, VideoMetadataService>();
         builder.Services.AddTransient<ILoggingBroker, LoggingBroker>();
+        builder.Services.AddTransient<IDateTimeBroker,DateTimeBroker>();    
     }
 }

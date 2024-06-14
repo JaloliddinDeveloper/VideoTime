@@ -18,7 +18,15 @@ namespace VideoTime.Services.Foundations.VideoMetadatas
               (Rule: IsInvalid(videoMetadata.Title), Parameter: nameof(videoMetadata.Title)),
               (Rule: IsInvalid(videoMetadata.BlobPath), Parameter: nameof(videoMetadata.BlobPath)),
               (Rule: IsInvalid(videoMetadata.CreatedDate), Parameter: nameof(videoMetadata.CreatedDate)),
-              (Rule: IsInvalid(videoMetadata.UpdatedDate), Parameter: nameof(videoMetadata.UpdatedDate)));
+              (Rule: IsInvalid(videoMetadata.UpdatedDate), Parameter: nameof(videoMetadata.UpdatedDate)),
+              (Rule: IsNotRecent(videoMetadata.CreatedDate), Parameter: nameof(VideoMetadata.CreatedDate)),
+
+                (Rule: IsNotSame(
+                    firstDate: videoMetadata.CreatedDate,
+                    secondDate: videoMetadata.UpdatedDate,
+                    secondDateName: nameof(videoMetadata.UpdatedDate)),
+
+                Parameter: nameof(videoMetadata.CreatedDate)));
         }
         private void ValidationVideoMetadataNotNull(VideoMetadata videoMetadata)
         {
@@ -42,6 +50,28 @@ namespace VideoTime.Services.Foundations.VideoMetadatas
             Condition = date == default,
             Message = "Data is required"
         };
+        private static dynamic IsNotSame(
+        DateTimeOffset firstDate,
+        DateTimeOffset secondDate,
+        string secondDateName) => new
+        {
+            Condition = firstDate != secondDate,
+            Message = $"Date is not same as {secondDateName}"
+        };
+
+        private dynamic IsNotRecent(DateTimeOffset date) => new
+        {
+            Condition = IsDateNotRecent(date),
+            Message = "Date is not recent"
+        };
+
+        private bool IsDateNotRecent(DateTimeOffset date)
+        {
+            DateTimeOffset currentDateTime = this.dateTimeBroker.GetCurrentDateTimeOffset();
+            TimeSpan timeDifference = currentDateTime.Subtract(date);
+
+            return timeDifference.TotalSeconds is > 60 or < 0;
+        }
         private static void Validate(params (dynamic Rule, string Parameter)[] validations)
         {
             var invalidVideoMetadataException =
