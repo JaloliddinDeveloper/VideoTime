@@ -15,7 +15,7 @@ namespace VideoTime.Unit.Tests.Sevices.Foundations.VideoMetadatas
         public async Task ShouldAddVideoMetadataAsync()
         {
             //give
-            DateTimeOffset randomDate = GetRandomDateTime();
+            DateTimeOffset randomDate = GetRandomDateTimeOffset();
             VideoMetadata randomVideoMetadata = CreateRandomVideoMetadata(randomDate);
             VideoMetadata inputVideoMetadata = randomVideoMetadata;
             VideoMetadata returningVideoMetadata = inputVideoMetadata;

@@ -14,6 +14,7 @@ namespace VideoTime.Services.Foundations.VideoMetadatas
     public partial class VideoMetadataService
     {
         private delegate ValueTask<VideoMetadata> ReturningVideoMetadataFunction();
+        private delegate IQueryable<VideoMetadata> ReturningVideoMetadatasFunction();
         private async ValueTask<VideoMetadata> TryCatch(ReturningVideoMetadataFunction returningVideoMetadataFunction)
         {
             try
@@ -64,12 +65,50 @@ namespace VideoTime.Services.Foundations.VideoMetadatas
             {
                 var failedVideoMetadataServiceException =
                     new FailedVideoMetadataServiceException(
-                        message: "Failed guest service error occurred,contact support",
+                        message: "Failed VideoMetadata service error occurred,contact support",
                         innerException: exception);
 
                 throw CreateAndLogServiseException(failedVideoMetadataServiceException);
             }
         }
+        private IQueryable<VideoMetadata> TryCatch(ReturningVideoMetadatasFunction returningVideoMetadatasFunction)
+        {
+            try
+            {
+                return returningVideoMetadatasFunction();
+            }
+            catch (SqlException sqlException)
+            {
+                FailedVideoMetadataStorageException failedVideoMetadataStorageException =
+                    new FailedVideoMetadataStorageException(
+                        "Failed Video Metadata storage error occured, please contact support",
+                            sqlException);
+
+                throw CreateAndLogCriticalDependencyException(failedVideoMetadataStorageException);
+            }
+            catch (Exception exception)
+            {
+                FailedVideoMetadataServiceException failedVideoMetadataServiceException =
+                    new FailedVideoMetadataServiceException(
+                        "Unexpected error of Video Metadata occured.",
+                            exception);
+
+                throw CreateAndLogVideoMetadataDependencyServiceErrorOccurs(failedVideoMetadataServiceException);
+            }
+        }
+
+        private VideoMetadataDependencyServiceException CreateAndLogVideoMetadataDependencyServiceErrorOccurs(Xeption exception)
+        {
+            var videoMetadataDependencyServiceException =
+                new VideoMetadataDependencyServiceException(
+                    "Unexpected service error occured. Contact support.",
+                        exception);
+
+            this.loggingBroker.LogError(videoMetadataDependencyServiceException);
+
+            return videoMetadataDependencyServiceException;
+        }
+
         private VideoMetadataServiceException CreateAndLogServiseException(Xeption exception)
         {
             var videoMetadataServiceException =
@@ -125,5 +164,8 @@ namespace VideoTime.Services.Foundations.VideoMetadatas
 
             return videoMetadataDependencyValidationException;
         }
+
+      
+
     }
 }

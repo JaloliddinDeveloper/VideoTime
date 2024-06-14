@@ -9,5 +9,6 @@ namespace VideoTime.Services.Foundations.VideoMetadatas
     public interface IVideoMetadataService
     {
         ValueTask<VideoMetadata> AddVideoMetadataAsync(VideoMetadata videoMetadata);
+        IQueryable<VideoMetadata> RetrieveAllVideoMetadatas();
     }
 }
