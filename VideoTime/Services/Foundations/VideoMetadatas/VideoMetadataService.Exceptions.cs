@@ -2,6 +2,7 @@
 // Copyright (c) Coalition Of Good-Hearted Engineers
 // Free To Use To Find Comfort And Peace
 //==================================================
+using EFxceptions.Models.Exceptions;
 using Microsoft.Data.SqlClient;
 using VideoTime.Models.Exceptions;
 using VideoTime.Models.VideoMetadatas;
@@ -34,6 +35,24 @@ namespace VideoTime.Services.Foundations.VideoMetadatas
 
                 throw CreateAndLogCriticalDependencyException(failedVideoMetadataStorageException);
             }
+            catch (DuplicateKeyException duplicateKeyException)
+            {
+                AlreadyExistVideoMetadataException alreadyExistVideoMetadataException
+                    = new("Video Metadata already exist, please try again",
+                        duplicateKeyException);
+
+                throw CreateAndLogDuplicateKeyException(alreadyExistVideoMetadataException);
+            }
+        }
+
+        private VideoMetadataDependencyValidationException CreateAndLogDuplicateKeyException(Xeption exception)
+        {
+            VideoMetadataDependencyValidationException videoMetadataDependencyValidationException =
+                new("Video Metadata dependency error occured. Fix errors and try again",
+                    exception);
+            this.loggingBroker.LogError(videoMetadataDependencyValidationException);
+
+            return videoMetadataDependencyValidationException;
         }
 
         private VideoMetadataDependencyException CreateAndLogCriticalDependencyException(Xeption exception)

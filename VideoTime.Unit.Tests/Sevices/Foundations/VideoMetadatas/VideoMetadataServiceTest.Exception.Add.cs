@@ -64,11 +64,11 @@ namespace VideoTime.Unit.Tests.Sevices.Foundations.VideoMetadatas
             var duplicateKeyException = new DuplicateKeyException(someString);
 
             AlreadyExistVideoMetadataException alreadyExistVideoMetadataException =
-                new("Video Metadata already exist, please try again.",
+                new("Video Metadata already exist, please try again",
                 innerException:duplicateKeyException);
 
             VideoMetadataDependencyValidationException expectedVideoMetadataDependencyValidationException
-                = new("Video Metadata dependency error occured. Fix errors and try again.",
+                = new("Video Metadata dependency error occured. Fix errors and try again",
                 innerException: alreadyExistVideoMetadataException);
 
             this.storageBrokerMock.Setup(broker =>
