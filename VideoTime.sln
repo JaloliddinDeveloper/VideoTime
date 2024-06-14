@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.34902.84
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VideoTime", "VideoTime\VideoTime.csproj", "{24D1C2B7-49DB-4C8F-9E13-CD4E096180AF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoTime.Infrastructure.Build", "VideoTime.Infrastructure.Build\VideoTime.Infrastructure.Build.csproj", "{8FDBDE3C-E5D2-4DCC-8AA6-8DEE09CF3609}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{24D1C2B7-49DB-4C8F-9E13-CD4E096180AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24D1C2B7-49DB-4C8F-9E13-CD4E096180AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24D1C2B7-49DB-4C8F-9E13-CD4E096180AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24D1C2B7-49DB-4C8F-9E13-CD4E096180AF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8FDBDE3C-E5D2-4DCC-8AA6-8DEE09CF3609}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FDBDE3C-E5D2-4DCC-8AA6-8DEE09CF3609}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FDBDE3C-E5D2-4DCC-8AA6-8DEE09CF3609}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FDBDE3C-E5D2-4DCC-8AA6-8DEE09CF3609}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1622EDA5-DDE8-489A-BF46-B84B3CEA01F2}
+	EndGlobalSection
+EndGlobal
