@@ -33,9 +33,7 @@ namespace VideoTime.Services.Foundations.VideoMetadatas
                return await this.storageBroker.InsertVideoMetadataAsync(videoMetadata);
            });
 
-        public IQueryable<VideoMetadata> RetrieveAllVideoMetadatas()
-        {
-            throw new NotImplementedException();
-        }
+        public IQueryable<VideoMetadata> RetrieveAllVideoMetadatas() =>
+			this.storageBroker.SelectAllVideoMetadatas();
     }
 }
