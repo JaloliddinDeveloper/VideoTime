@@ -14,7 +14,7 @@ namespace VideoTime.Services.Foundations.VideoMetadatas
         public VideoMetadataService(IStorageBroker storageBroker)=>
             this.storageBroker = storageBroker;
 
-        public ValueTask<VideoMetadata> AddVideoMetadataAsync(VideoMetadata videoMetadata)=>
-            this.storageBroker.InsertVideoMetadataAsync(videoMetadata);       
+        public async ValueTask<VideoMetadata> AddVideoMetadataAsync(VideoMetadata videoMetadata)=>
+          await this.storageBroker.InsertVideoMetadataAsync(videoMetadata);       
     }
 }
