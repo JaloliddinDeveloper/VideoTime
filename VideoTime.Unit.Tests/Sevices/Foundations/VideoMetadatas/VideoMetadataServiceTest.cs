@@ -2,11 +2,14 @@
 // Copyright (c) Coalition Of Good-Hearted Engineers
 // Free To Use To Find Comfort And Peace
 //==================================================
+using Microsoft.Data.SqlClient;
 using Moq;
 using System.Linq.Expressions;
+using System.Runtime.Serialization;
 using Tynamix.ObjectFiller;
 using VideoTime.Brokers.Loggings;
 using VideoTime.Brokers.Storages;
+using VideoTime.Models.Exceptions;
 using VideoTime.Models.VideoMetadatas;
 using VideoTime.Services.Foundations.VideoMetadatas;
 using Xeptions;
@@ -31,6 +34,8 @@ namespace VideoTime.Unit.Tests.Sevices.Foundations.VideoMetadatas
 
         private Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException) =>
           actualException => actualException.SameExceptionAs(expectedException);
+        private static SqlException GetSqlException() =>
+            (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
         private static DateTimeOffset GetRandomDateTime() =>
            new DateTimeRange(earliestDate: DateTime.UnixEpoch).GetValue();
