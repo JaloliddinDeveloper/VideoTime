@@ -4,6 +4,7 @@
 //==================================================
 using Moq;
 using Tynamix.ObjectFiller;
+using VideoTime.Brokers.Loggings;
 using VideoTime.Brokers.Storages;
 using VideoTime.Models.VideoMetadatas;
 using VideoTime.Services.Foundations.VideoMetadatas;
@@ -13,14 +14,17 @@ namespace VideoTime.Unit.Tests.Sevices.Foundations.VideoMetadatas
     public partial class VideoMetadataServiceTest
     {
         private readonly Mock<IStorageBroker> storageBrokerMock;
+        private readonly Mock<ILoggingBroker> loggingBrokerMock;
         private readonly IVideoMetadataService videoMetadataService;
 
         public VideoMetadataServiceTest()
         {
             this.storageBrokerMock = new Mock<IStorageBroker>();
+            this.loggingBrokerMock = new Mock<ILoggingBroker>();
 
             this.videoMetadataService = new VideoMetadataService
-                (storageBroker: this.storageBrokerMock.Object);
+                (storageBroker: this.storageBrokerMock.Object,
+                loggingBroker:this.loggingBrokerMock.Object);
         }
         private static DateTimeOffset GetRandomDateTime() =>
            new DateTimeRange(earliestDate: DateTime.UnixEpoch).GetValue();
