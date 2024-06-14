@@ -2,11 +2,11 @@
 // Copyright (c) Coalition Of Good-Hearted Engineers
 // Free To Use To Find Comfort And Peace
 //==================================================
-namespace VideoTime.Unit.Tests
+namespace VideoTime.Brokers.DateTimes
 {
-    public class DeleteMe
+    public class DateTimeBroker:IDateTimeBroker
     {
-        [Fact]
-        public void ShouldBeTrue() => Assert.True(true);
+        public DateTimeOffset GetCurrentDateTimeOffset() =>
+            DateTimeOffset.UtcNow;
     }
 }
