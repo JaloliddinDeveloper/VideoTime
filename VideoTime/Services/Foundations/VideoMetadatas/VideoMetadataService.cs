@@ -21,10 +21,10 @@ namespace VideoTime.Services.Foundations.VideoMetadatas
             this.loggingBroker = loggingBroker;
         }
         public ValueTask<VideoMetadata> AddVideoMetadataAsync(VideoMetadata videoMetadata) =>
-             TryCatch(async () =>
-             {
-                 ValidationVideoMetadataNutNull(videoMetadata);
-                 return await this.storageBroker.InsertVideoMetadataAsync(videoMetadata);
-             });
+           TryCatch(async () =>
+           {
+               ValidatevideoMetadataOnAdd(videoMetadata);
+               return await this.storageBroker.InsertVideoMetadataAsync(videoMetadata);
+           });
     }
 }

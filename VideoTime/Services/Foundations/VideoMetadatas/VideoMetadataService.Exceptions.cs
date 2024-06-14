@@ -21,14 +21,18 @@ namespace VideoTime.Services.Foundations.VideoMetadatas
             {
                 throw CreateAndLogValidationException(nullVideoMetadataException);
             }
+            catch (InvalidVideoMetadataException invalidVideoMetadataException)
+            {
+                throw CreateAndLogValidationException(invalidVideoMetadataException);
+            }
         }
-
         private VideoMetadataValidationException CreateAndLogValidationException(Xeption exception)
         {
-            var videoMetadataValidationException
-                  = new VideoMetadataValidationException(
+            var videoMetadataValidationException =
+                new VideoMetadataValidationException(
                     message: "Video metadata Validation error occurred,fix the errors and try again",
                     innerException: exception);
+
             this.loggingBroker.LogError(videoMetadataValidationException);
             return videoMetadataValidationException;
         }
