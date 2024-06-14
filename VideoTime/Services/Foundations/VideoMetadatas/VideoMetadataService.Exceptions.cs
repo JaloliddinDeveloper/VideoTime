@@ -56,5 +56,6 @@ namespace VideoTime.Services.Foundations.VideoMetadatas
             this.loggingBroker.LogError(videoMetadataValidationException);
             return videoMetadataValidationException;
         }
+
     }
 }

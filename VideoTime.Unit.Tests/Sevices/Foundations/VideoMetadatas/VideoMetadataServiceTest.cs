@@ -37,6 +37,9 @@ namespace VideoTime.Unit.Tests.Sevices.Foundations.VideoMetadatas
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetUninitializedObject(typeof(SqlException));
 
+        private static string GetRandomString() =>
+            new MnemonicString().GetValue().ToString();
+
         private static DateTimeOffset GetRandomDateTime() =>
            new DateTimeRange(earliestDate: DateTime.UnixEpoch).GetValue();
 
