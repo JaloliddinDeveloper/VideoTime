@@ -52,5 +52,48 @@ namespace VideoTime.Unit.Tests.Sevices.Foundations.VideoMetadatas
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
+        [Fact]
+        public void ShouldThrowServiceExceptionOnRetrieveAllIfServiceErrorOccursAndLogItAsync()
+        {
+            //given
+            string exceptionMessage = GetRandomString();
+            var serviceException = new Exception(exceptionMessage);
+
+            FailedVideoMetadataServiceException failedVideoMetadataServiceException =
+                new FailedVideoMetadataServiceException(
+                    "Unexpected error of Video Metadata occured.",
+                        serviceException);
+
+            VideoMetadataDependencyServiceException expectedVideoMetadataDependencyServiceException =
+                new VideoMetadataDependencyServiceException(
+                    "Unexpected service error occured. Contact support.",
+                        failedVideoMetadataServiceException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectAllVideoMetadatas()).Throws(serviceException);
+
+            //when
+            Action retrieveAllVideoMetadatasAction = () =>
+                this.videoMetadataService.RetrieveAllVideoMetadatas();
+
+            VideoMetadataDependencyServiceException actualVideoMetadataDependencyServiceException =
+                Assert.Throws<VideoMetadataDependencyServiceException>(retrieveAllVideoMetadatasAction);
+
+            //then
+            actualVideoMetadataDependencyServiceException.Should().BeEquivalentTo(
+                expectedVideoMetadataDependencyServiceException);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectAllVideoMetadatas(),
+                    Times.Once);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedVideoMetadataDependencyServiceException))),
+                        Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
