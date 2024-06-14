@@ -39,11 +39,11 @@ namespace VideoTime.Unit.Tests.Sevices.Foundations.VideoMetadatas
         private Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException) =>
          actualException => actualException.SameExceptionAs(expectedException);
 
-        private static DateTimeOffset GetRandomDateTime() =>
+        private static DateTimeOffset GetRandomDateTimeOffset() =>
            new DateTimeRange(earliestDate: DateTime.UnixEpoch).GetValue();
 
         private static VideoMetadata CreateRandomVideoMetadata() =>
-         CreateVideoMetadataFiller(GetRandomDateTime()).Create();
+         CreateVideoMetadataFiller(GetRandomDateTimeOffset()).Create();
 
         public static VideoMetadata CreateRandomVideoMetadata(DateTimeOffset date) =>
           CreateVideoMetadataFiller(date).Create();
@@ -61,6 +61,13 @@ namespace VideoTime.Unit.Tests.Sevices.Foundations.VideoMetadatas
         private static string GetRandomString()
         {
             return new MnemonicString().GetValue();
+        }
+        private static int GetRandomNumber() =>
+            new IntRange(min: 2, max: 10).GetValue();
+        private static IQueryable<VideoMetadata> CreateRandomVideoMetadatas()
+        {
+            return CreateVideoMetadataFiller(dates: GetRandomDateTimeOffset())
+                .Create(count: GetRandomNumber()).AsQueryable();
         }
     }
 }

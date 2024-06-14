@@ -64,7 +64,7 @@ namespace VideoTime.Services.Foundations.VideoMetadatas
             {
                 var failedVideoMetadataServiceException =
                     new FailedVideoMetadataServiceException(
-                        message: "Failed guest service error occurred,contact support",
+                        message: "Failed VideoMetadata service error occurred,contact support",
                         innerException: exception);
 
                 throw CreateAndLogServiseException(failedVideoMetadataServiceException);

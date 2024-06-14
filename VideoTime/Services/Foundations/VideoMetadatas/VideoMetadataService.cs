@@ -9,7 +9,7 @@ using VideoTime.Models.VideoMetadatas;
 
 namespace VideoTime.Services.Foundations.VideoMetadatas
 {
-    public partial class VideoMetadataService:IVideoMetadataService
+    public partial class VideoMetadataService : IVideoMetadataService
     {
         private readonly IStorageBroker storageBroker;
         private readonly ILoggingBroker loggingBroker;
@@ -32,5 +32,10 @@ namespace VideoTime.Services.Foundations.VideoMetadatas
                ValidatevideoMetadataOnAdd(videoMetadata);
                return await this.storageBroker.InsertVideoMetadataAsync(videoMetadata);
            });
+
+        public IQueryable<VideoMetadata> RetrieveAllVideoMetadatas()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
