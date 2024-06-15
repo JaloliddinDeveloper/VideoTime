@@ -35,6 +35,17 @@ namespace VideoTime.Services.Foundations.VideoMetadatas
                 throw new NullVideoMetadataException(message: "Video metadata is null");
             }
         }
+        public void ValidateVideoMetadataId(Guid videoMetadataId) =>
+            Validate((Rule: IsInvalid(videoMetadataId), Parameter: nameof(VideoMetadata.Id)));
+
+        private static void ValidateStorageVideoMetadata(VideoMetadata maybeVideoMetadata, Guid videoMetadataId)
+        {
+            if (maybeVideoMetadata is null)
+            {
+                throw new NotFoundVidoeMetadataException(
+                    $"Couldn't find video metadata with id {videoMetadataId}");
+            }
+        }
         private static dynamic IsInvalid(Guid id) => new
         {
             Condition = id == Guid.Empty,

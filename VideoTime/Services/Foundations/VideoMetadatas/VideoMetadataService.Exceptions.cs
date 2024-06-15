@@ -61,6 +61,10 @@ namespace VideoTime.Services.Foundations.VideoMetadatas
 
                 throw CreateAndLogDependencyException(failedVideoMetadataStorageException);
             }
+            catch (NotFoundVidoeMetadataException notFoundVidoeMetadataException)
+            {
+                throw CreateAndLogValidationException(notFoundVidoeMetadataException);
+            }
             catch (Exception exception)
             {
                 var failedVideoMetadataServiceException =
@@ -164,8 +168,5 @@ namespace VideoTime.Services.Foundations.VideoMetadatas
 
             return videoMetadataDependencyValidationException;
         }
-
-      
-
     }
 }
