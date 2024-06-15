@@ -65,7 +65,7 @@ namespace VideoTime.Unit.Tests.Sevices.Foundations.VideoMetadatas
 
             VideoMetadataValidationException expectedVideoMetadataValidationException =
                 new VideoMetadataValidationException(
-                    message: "Video Metadata Validation Exception occured, fix the errors and try again.",
+                    message: "Video metadata Validation error occurred,fix the errors and try again",
                         notFoundVidoeMetadataException);
 
             this.storageBrokerMock.Setup(broker =>

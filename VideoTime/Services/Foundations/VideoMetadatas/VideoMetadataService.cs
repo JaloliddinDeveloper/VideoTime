@@ -46,6 +46,9 @@ namespace VideoTime.Services.Foundations.VideoMetadatas
                 ValidateVideoMetadataId(videoMetadataId);
                 VideoMetadata maybeVideoMetadata =
                     await this.storageBroker.SelectVideoMetadataByIdAsync(videoMetadataId);
+
+                ValidateStorageVideoMetadata(maybeVideoMetadata, videoMetadataId);
+
                 return maybeVideoMetadata;
             });
 
