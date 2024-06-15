@@ -57,7 +57,7 @@ namespace VideoTime.Unit.Tests.Sevices.Foundations.VideoMetadatas
             };
 
             var invalidVideoMetadataException =
-                new InvalidVideoMetadataException(message: "Video Metadata is invalid.");
+                new InvalidVideoMetadataException(message: "Video metadata is invalid");
 
             invalidVideoMetadataException.AddData(
                 key: nameof(VideoMetadata.Id),
@@ -81,7 +81,7 @@ namespace VideoTime.Unit.Tests.Sevices.Foundations.VideoMetadatas
 
             var expectedVideoMetadataValidationException =
                 new VideoMetadataValidationException(
-                    message: "Video Metadata Validation Exception occured, fix the errors and try again.",
+                    message: "Video metadata Validation error occurred,fix the errors and try again",
                     innerException: invalidVideoMetadataException);
 
             // when
