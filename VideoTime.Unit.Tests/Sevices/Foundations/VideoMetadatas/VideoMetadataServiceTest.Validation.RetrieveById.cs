@@ -18,15 +18,15 @@ namespace VideoTime.Unit.Tests.Sevices.Foundations.VideoMetadatas
             var invalidVideoMetadataId = Guid.Empty;
 
             var invalidVideoMetadataException =
-                new InvalidVideoMetadataException("Video Metadata is invalid.");
+                new InvalidVideoMetadataException("Video metadata is invalid");
 
             invalidVideoMetadataException.AddData(
                 key: nameof(VideoMetadata.Id),
-                values: "Id is required.");
+                values: "Id is required");
 
             var expectedVideoMetadataValidationException =
                 new VideoMetadataValidationException(
-                    "Video Metadata Validation Exception occured, fix the errors and try again.",
+                    "Video metadata Validation error occurred,fix the errors and try again",
                         invalidVideoMetadataException);
 
             //when
