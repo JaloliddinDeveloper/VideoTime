@@ -70,11 +70,15 @@ namespace VideoTime.Unit.Tests.Sevices.Foundations.VideoMetadatas
 
             var invalidVideoMetadataException =
                 new InvalidVideoMetadataException(
-                    message: "Video Metadata is invalid.");
+                    message: "Video metadata is invalid");
+
+            invalidVideoMetadataException.AddData(
+              key: nameof(VideoMetadata.CreatedDate),
+              values: $"Date is not same as {nameof(VideoMetadata.CreatedDate)}");
 
             var expectedVideoMetadataValidationException =
                 new VideoMetadataValidationException(
-                    message: "Vidoe Metadata Validation Exception occured, fix the errors and try again.",
+                    message: "Video metadata Validation error occurred,fix the errors and try again",
                     innerException: invalidVideoMetadataException);
 
             this.storageBrokerMock.Setup(broker =>

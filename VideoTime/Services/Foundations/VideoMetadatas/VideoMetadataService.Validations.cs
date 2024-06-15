@@ -61,6 +61,13 @@ namespace VideoTime.Services.Foundations.VideoMetadatas
         private void ValidateAgainstStorageOnModify(VideoMetadata inputVideoMetadata, VideoMetadata maybeVideoMetadata)
         {
             ValidateStorageVideoMetadataExists(maybeVideoMetadata, inputVideoMetadata.Id);
+
+            Validate(
+               (Rule: IsNotSame(
+                   inputVideoMetadata.CreatedDate,
+                   maybeVideoMetadata.CreatedDate,
+                   nameof(VideoMetadata.CreatedDate)),
+               Parameter: nameof(VideoMetadata.CreatedDate)));
         }
 
         private void ValidateStorageVideoMetadataExists(VideoMetadata storageVideoMetadata, Guid videoMetadataId)
