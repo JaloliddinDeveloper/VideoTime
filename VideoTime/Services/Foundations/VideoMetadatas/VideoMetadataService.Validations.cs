@@ -58,6 +58,19 @@ namespace VideoTime.Services.Foundations.VideoMetadatas
              (Rule: IsInvalid(videoMetadata.UpdatedDate), Parameter: nameof(VideoMetadata.UpdatedDate))
              );
         }
+        private void ValidateAgainstStorageOnModify(VideoMetadata inputVideoMetadata, VideoMetadata maybeVideoMetadata)
+        {
+            ValidateStorageVideoMetadataExists(maybeVideoMetadata, inputVideoMetadata.Id);
+        }
+
+        private void ValidateStorageVideoMetadataExists(VideoMetadata storageVideoMetadata, Guid videoMetadataId)
+        {
+            if (storageVideoMetadata is null)
+            {
+                throw new NotFoundVidoeMetadataException(
+                    message: $"Couldn't find video metadata with id {videoMetadataId}");
+            }
+        }
         private static dynamic IsInvalid(Guid id) => new
         {
             Condition = id == Guid.Empty,
