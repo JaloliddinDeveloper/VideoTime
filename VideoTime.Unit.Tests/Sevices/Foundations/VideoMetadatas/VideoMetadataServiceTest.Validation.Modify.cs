@@ -20,7 +20,7 @@ namespace VideoTime.Unit.Tests.Sevices.Foundations.VideoMetadatas
 
             var expectedVideoMetadataValidationException =
                 new VideoMetadataValidationException(
-                    message: "Video Metadata Validation Exception occurred, fix the errors and try again",
+                    message: "Video metadata Validation error occurred,fix the errors and try again",
                     innerException: nullVideoMetadataException);
 
             // when

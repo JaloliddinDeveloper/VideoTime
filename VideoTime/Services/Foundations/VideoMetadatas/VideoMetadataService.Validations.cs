@@ -46,6 +46,10 @@ namespace VideoTime.Services.Foundations.VideoMetadatas
                     $"Couldn't find video metadata with id {videoMetadataId}");
             }
         }
+        private void ValidateVideoMetadataOnModify(VideoMetadata videoMetadata)
+        {
+            ValidationVideoMetadataNotNull(videoMetadata);
+        }
         private static dynamic IsInvalid(Guid id) => new
         {
             Condition = id == Guid.Empty,
@@ -99,4 +103,4 @@ namespace VideoTime.Services.Foundations.VideoMetadatas
         }
     }
 }
-   
+
