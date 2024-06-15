@@ -66,9 +66,9 @@ namespace VideoTime.Unit.Tests.Sevices.Foundations.VideoMetadatas
                  values: "Text is required");
 
             invalidVideoMetadataException.AddData(key: nameof(VideoMetadata.CreatedDate),
-                 values: "Data is required");
+                 values: "Date is required");
             invalidVideoMetadataException.AddData(key: nameof(VideoMetadata.UpdatedDate),
-                 values: "Data is required");
+                 values: "Date is required");
 
             var expectedVideoMetadataValidationExpected =
                 new VideoMetadataValidationException(

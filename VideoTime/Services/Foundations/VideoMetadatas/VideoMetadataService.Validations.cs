@@ -46,6 +46,38 @@ namespace VideoTime.Services.Foundations.VideoMetadatas
                     $"Couldn't find video metadata with id {videoMetadataId}");
             }
         }
+        private void ValidateVideoMetadataOnModify(VideoMetadata videoMetadata)
+        {
+            ValidationVideoMetadataNotNull(videoMetadata);
+
+            Validate(
+             (Rule: IsInvalid(videoMetadata.Id), Parameter: nameof(VideoMetadata.Id)),
+             (Rule: IsInvalid(videoMetadata.Title), Parameter: nameof(VideoMetadata.Title)),
+             (Rule: IsInvalid(videoMetadata.BlobPath), Parameter: nameof(VideoMetadata.BlobPath)),
+             (Rule: IsInvalid(videoMetadata.CreatedDate), Parameter: nameof(VideoMetadata.CreatedDate)),
+             (Rule: IsInvalid(videoMetadata.UpdatedDate), Parameter: nameof(VideoMetadata.UpdatedDate))
+             );
+        }
+        private void ValidateAgainstStorageOnModify(VideoMetadata inputVideoMetadata, VideoMetadata maybeVideoMetadata)
+        {
+            ValidateStorageVideoMetadataExists(maybeVideoMetadata, inputVideoMetadata.Id);
+
+            Validate(
+               (Rule: IsNotSame(
+                   inputVideoMetadata.CreatedDate,
+                   maybeVideoMetadata.CreatedDate,
+                   nameof(VideoMetadata.CreatedDate)),
+               Parameter: nameof(VideoMetadata.CreatedDate)));
+        }
+
+        private void ValidateStorageVideoMetadataExists(VideoMetadata storageVideoMetadata, Guid videoMetadataId)
+        {
+            if (storageVideoMetadata is null)
+            {
+                throw new NotFoundVidoeMetadataException(
+                    message: $"Couldn't find video metadata with id {videoMetadataId}");
+            }
+        }
         private static dynamic IsInvalid(Guid id) => new
         {
             Condition = id == Guid.Empty,
@@ -59,7 +91,7 @@ namespace VideoTime.Services.Foundations.VideoMetadatas
         private static dynamic IsInvalid(DateTimeOffset date) => new
         {
             Condition = date == default,
-            Message = "Data is required"
+            Message = "Date is required"
         };
         private static dynamic IsNotSame(
         DateTimeOffset firstDate,
@@ -99,4 +131,4 @@ namespace VideoTime.Services.Foundations.VideoMetadatas
         }
     }
 }
-   
+

@@ -51,8 +51,15 @@ namespace VideoTime.Services.Foundations.VideoMetadatas
 
                 return maybeVideoMetadata;
             });
-
-
+        public ValueTask<VideoMetadata> ModifyVideoMetadataAsync(VideoMetadata videoMetadata) =>
+            TryCatch(async () =>
+            {
+                ValidateVideoMetadataOnModify(videoMetadata);
+                VideoMetadata maybeVideoMetadata =
+                 await this.storageBroker.SelectVideoMetadataByIdAsync(videoMetadata.Id);
+                ValidateAgainstStorageOnModify(videoMetadata, maybeVideoMetadata);
+                return await this.storageBroker.UpdateVideoMetadataAsync(videoMetadata);
+            });
 
     }
 }

@@ -61,12 +61,12 @@ namespace VideoTime.Unit.Tests.Sevices.Foundations.VideoMetadatas
 
             FailedVideoMetadataServiceException failedVideoMetadataServiceException =
                 new FailedVideoMetadataServiceException(
-                    "Unexpected error of Video Metadata occured.",
+                    "Unexpected error of Video Metadata occured",
                         serviceException);
 
             VideoMetadataDependencyServiceException expectedVideoMetadataDependencyServiceException =
                 new VideoMetadataDependencyServiceException(
-                    "Unexpected service error occured. Contact support.",
+                    "Unexpected service error occured. Contact support",
                         failedVideoMetadataServiceException);
 
             this.storageBrokerMock.Setup(broker =>
