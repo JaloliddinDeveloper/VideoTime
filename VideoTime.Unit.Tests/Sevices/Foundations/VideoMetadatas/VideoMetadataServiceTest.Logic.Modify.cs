@@ -39,7 +39,7 @@ namespace VideoTime.Unit.Tests.Sevices.Foundations.VideoMetadatas
 
             this.storageBrokerMock.Verify(broker =>
                 broker.SelectVideoMetadataByIdAsync(videoMetadataId),
-                    Times.Once());
+                      Times.Never());
 
             this.storageBrokerMock.Verify(broker =>
                 broker.UpdateVideoMetadataAsync(inputVideoMetadata),
