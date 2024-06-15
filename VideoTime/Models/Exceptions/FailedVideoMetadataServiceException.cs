@@ -6,7 +6,7 @@ using Xeptions;
 
 namespace VideoTime.Models.Exceptions
 {
-    public class FailedVideoMetadataServiceException:Xeption
+    public class FailedVideoMetadataServiceException : Xeption
     {
         public FailedVideoMetadataServiceException(string message, Exception innerException)
            : base(message, innerException)

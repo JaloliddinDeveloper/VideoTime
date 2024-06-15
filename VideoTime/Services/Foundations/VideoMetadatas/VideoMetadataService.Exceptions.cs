@@ -94,8 +94,8 @@ namespace VideoTime.Services.Foundations.VideoMetadatas
             {
                 FailedVideoMetadataServiceException failedVideoMetadataServiceException =
                     new FailedVideoMetadataServiceException(
-                        "Unexpected error of Video Metadata occured.",
-                            exception);
+                        message:"Unexpected error of Video Metadata occured",innerException: exception);
+                     
 
                 throw CreateAndLogVideoMetadataDependencyServiceErrorOccurs(failedVideoMetadataServiceException);
             }
@@ -105,7 +105,7 @@ namespace VideoTime.Services.Foundations.VideoMetadatas
         {
             var videoMetadataDependencyServiceException =
                 new VideoMetadataDependencyServiceException(
-                    "Unexpected service error occured. Contact support.",
+                    "Unexpected service error occured. Contact support",
                         exception);
 
             this.loggingBroker.LogError(videoMetadataDependencyServiceException);
@@ -113,7 +113,7 @@ namespace VideoTime.Services.Foundations.VideoMetadatas
             return videoMetadataDependencyServiceException;
         }
 
-        private VideoMetadataServiceException CreateAndLogServiseException(Xeption exception)
+        private VideoMetadataServiceException CreateAndLogServiseException(Exception exception)
         {
             var videoMetadataServiceException =
                 new VideoMetadataServiceException(message: "Video metadata service error occurred,contact support", innerException: exception);

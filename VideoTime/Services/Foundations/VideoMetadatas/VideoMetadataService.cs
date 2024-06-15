@@ -51,8 +51,9 @@ namespace VideoTime.Services.Foundations.VideoMetadatas
 
                 return maybeVideoMetadata;
             });
-
-
-
+        public ValueTask<VideoMetadata> ModifyVideoMetadataAsync(VideoMetadata videoMetadata)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
