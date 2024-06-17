@@ -60,6 +60,9 @@ namespace VideoTime.Services.Foundations.VideoMetadatas
                 ValidateAgainstStorageOnModify(videoMetadata, maybeVideoMetadata);
                 return await this.storageBroker.UpdateVideoMetadataAsync(videoMetadata);
             });
-
+        public ValueTask<VideoMetadata> RemoveVideoMetadataByIdAsync(Guid videoMetadataId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
