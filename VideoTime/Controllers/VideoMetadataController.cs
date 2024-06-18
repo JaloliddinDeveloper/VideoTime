@@ -51,5 +51,28 @@ namespace VideoTime.Controllers
                 return InternalServerError(videoMetadataDependencyServiceException);
             }
         }
+        [HttpGet]
+        public ActionResult<IQueryable<VideoMetadata>> GetAllVideoMetadatas()
+        {
+            try
+            {
+                IQueryable<VideoMetadata> gettingAllVideoMetadatas =
+                this.videoMetadataService.RetrieveAllVideoMetadatas();
+
+                return Ok(gettingAllVideoMetadatas);
+            }
+            catch (VideoMetadataDependencyException videoMetadataDependencyException)
+            {
+                return InternalServerError(videoMetadataDependencyException);
+            }
+            catch (VideoMetadataDependencyServiceException videoMetadataDependencyServiceException)
+            {
+                return InternalServerError(videoMetadataDependencyServiceException);
+            }
+        }
     }
 }
+
+
+
+
