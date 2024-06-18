@@ -65,7 +65,7 @@ namespace VideoTime.Unit.Tests.Sevices.Foundations.VideoMetadatas
             VideoMetadata nonExistVideoMetadata = null;
 
             var notFoundVideoMetadataException =
-                new NotFoundVidoeMetadataException(
+                new NotFoundVideoMetadataException(
                     message: $"Couldn't find video metadata with id {someId}");
 
             var expectedVideoMetadataValidationException =
