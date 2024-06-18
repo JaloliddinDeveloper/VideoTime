@@ -42,7 +42,7 @@ namespace VideoTime.Services.Foundations.VideoMetadatas
         {
             if (maybeVideoMetadata is null)
             {
-                throw new NotFoundVidoeMetadataException(
+                throw new NotFoundVideoMetadataException(
                     $"Couldn't find video metadata with id {videoMetadataId}");
             }
         }
@@ -74,7 +74,7 @@ namespace VideoTime.Services.Foundations.VideoMetadatas
         {
             if (storageVideoMetadata is null)
             {
-                throw new NotFoundVidoeMetadataException(
+                throw new NotFoundVideoMetadataException(
                     message: $"Couldn't find video metadata with id {videoMetadataId}");
             }
         }

@@ -6,9 +6,9 @@ using Xeptions;
 
 namespace VideoTime.Models.Exceptions
 {
-    public class NotFoundVidoeMetadataException:Xeption
+    public class NotFoundVideoMetadataException:Xeption
     {
-        public NotFoundVidoeMetadataException(string message)
+        public NotFoundVideoMetadataException(string message)
          : base(message)
         { }
     }

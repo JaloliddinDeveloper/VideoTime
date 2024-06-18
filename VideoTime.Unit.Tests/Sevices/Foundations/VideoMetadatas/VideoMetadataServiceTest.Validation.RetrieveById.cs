@@ -60,8 +60,8 @@ namespace VideoTime.Unit.Tests.Sevices.Foundations.VideoMetadatas
             Guid someVideoMetadataId = Guid.NewGuid();
             VideoMetadata noVideoMetadata = null;
 
-            NotFoundVidoeMetadataException notFoundVidoeMetadataException =
-                new NotFoundVidoeMetadataException($"Couldn't find video metadata with id {someVideoMetadataId}");
+            NotFoundVideoMetadataException notFoundVidoeMetadataException =
+                new NotFoundVideoMetadataException($"Couldn't find video metadata with id {someVideoMetadataId}");
 
             VideoMetadataValidationException expectedVideoMetadataValidationException =
                 new VideoMetadataValidationException(

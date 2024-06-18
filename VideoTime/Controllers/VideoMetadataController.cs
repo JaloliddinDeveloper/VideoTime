@@ -70,6 +70,35 @@ namespace VideoTime.Controllers
                 return InternalServerError(videoMetadataDependencyServiceException);
             }
         }
+
+        [HttpGet("{videoMetadataId}")]
+        public async ValueTask<ActionResult<VideoMetadata>> GetVideoMetadataByIdasync(Guid videoMetadataId)
+        {
+            try
+            {
+                VideoMetadata videoMetadata =
+                    await this.videoMetadataService.RetrieveVideoMetadataByIdAsync(videoMetadataId);
+
+                return Ok(videoMetadata);
+            }
+            catch (VideoMetadataValidationException videoMetadataValidationException)
+                when (videoMetadataValidationException.InnerException is NotFoundVideoMetadataException)
+            {
+                return NotFound(videoMetadataValidationException.InnerException);
+            }
+            catch (VideoMetadataValidationException videoMetadataValidationException)
+            {
+                return BadRequest(videoMetadataValidationException.InnerException);
+            }
+            catch (VideoMetadataDependencyException videoMetadataDependencyException)
+            {
+                return InternalServerError(videoMetadataDependencyException);
+            }
+            catch (VideoMetadataDependencyServiceException videoMetadataDependencyServiceException)
+            {
+                return InternalServerError(videoMetadataDependencyServiceException);
+            }
+        }
     }
 }
 
