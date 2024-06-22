@@ -13,6 +13,11 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        builder.Services.AddRazorPages(options =>
+        {
+            options.RootDirectory = "/Views/Pages";
+        });
+
         builder.Services.AddRazorComponents()
             .AddInteractiveServerComponents();
         AddTransient(builder);
