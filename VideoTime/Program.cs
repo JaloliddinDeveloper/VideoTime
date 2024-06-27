@@ -29,7 +29,7 @@ public class Program
 
         builder.Services.AddSingleton<IBlobBroker, BlobBroker>();
         builder.Services.AddSingleton(_ => new BlobServiceClient(
-            builder.Configuration.GetConnectionString("BlobStorage"));
+            builder.Configuration.GetConnectionString("BlobStorage")));
 
         var app = builder.Build();
 
