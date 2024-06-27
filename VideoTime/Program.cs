@@ -2,11 +2,16 @@
 // Copyright (c) Coalition Of Good-Hearted Engineers
 // Free To Use To Find Comfort And Peace
 //==================================================
+
+using Azure.Storage.Blobs;
+using System.Configuration;
+using VideoTime.Brokers.Blobs;
 using VideoTime.Brokers.DateTimes;
 using VideoTime.Brokers.Loggings;
 using VideoTime.Brokers.Storages;
 using VideoTime.Components;
 using VideoTime.Services.Foundations.VideoMetadatas;
+
 public class Program
 {
     private static void Main(string[] args)
@@ -21,6 +26,10 @@ public class Program
         builder.Services.AddRazorComponents()
             .AddInteractiveServerComponents();
         AddTransient(builder);
+
+        builder.Services.AddSingleton<IBlobBroker, BlobBroker>();
+        builder.Services.AddSingleton(_ => new BlobServiceClient(
+            builder.Configuration.GetConnectionString("BlobStorage"));
 
         var app = builder.Build();
 
