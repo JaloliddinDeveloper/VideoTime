@@ -13,7 +13,7 @@ namespace VideoTime.Brokers.Blobs
     public class BlobBroker : IBlobBroker
     {
         private readonly BlobServiceClient blobServiceClient;
-        private const string ContainerName = "";
+        private const string ContainerName = "videos";
 
         public BlobBroker(BlobServiceClient blobServiceClient)
         {
