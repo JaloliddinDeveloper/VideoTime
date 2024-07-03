@@ -1,36 +1,62 @@
-﻿using Microsoft.Data.SqlClient;
+//==================================================
+// Copyright (c) Coalition Of Good-Hearted Engineers
+// Free To Use To Find Comfort And Peace
+//==================================================
+using Azure.Storage;
+using Azure.Storage.Blobs;
+using Azure.Storage.Sas;
 using VideoTime.Models.VideoMetadatas;
 
 namespace VideoTime.Views.Pages
 {
     public partial class Home
     {
-        private List<VideoMetadata> videos = new List<VideoMetadata>();
-        protected override void OnInitialized()
+        private List<VideoMetadata> BlobPaths;
+        private List<VideoMetadata> filteredBlobPaths;
+        private string searchQuery;
+
+        protected override async Task OnInitializedAsync()
         {
-            string connectionString = "Server=(localdb)\\MSSQLLocalDB;Database=VideoTimeDBCore;Trusted_Connection=True;MultipleActiveResultSets=true";
+            string connectionString = Configuration.GetConnectionString("AzureBlobStorage");
+            string videoContainerName = Configuration["AzureVideoContainer"];
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            var blobServiceClient = new BlobServiceClient(connectionString);
+            var blobContainerClient = blobServiceClient.GetBlobContainerClient(videoContainerName);
+
+            BlobPaths = new List<VideoMetadata>();
+
+            await foreach (var blobItem in blobContainerClient.GetBlobsAsync())
             {
-                connection.Open();
-                string query = "SELECT Id, Title, BlobPath,Thubnail FROM VideoMetadatas"; // Select all videos
+                var blobClient = blobContainerClient.GetBlobClient(blobItem.Name);
 
-                using (SqlCommand command = new SqlCommand(query, connection))
+                BlobSasBuilder sasBuilder = new BlobSasBuilder()
                 {
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            videos.Add(new VideoMetadata
-                            {
-                                Id = reader.GetGuid(reader.GetOrdinal("Id")),
-                                Title = reader.GetString(reader.GetOrdinal("Title")),
-                                BlobPath = reader.GetString(reader.GetOrdinal("BlobPath")),
-                                Thubnail = reader.GetString(reader.GetOrdinal("Thubnail"))
-                            });
-                        }
-                    }
-                }
+                    BlobContainerName = videoContainerName,
+                    BlobName = blobItem.Name,
+                    Resource = "b",
+                    ExpiresOn = DateTimeOffset.UtcNow.AddHours(1)
+                };
+
+                sasBuilder.SetPermissions(BlobSasPermissions.Read);
+                string sasToken = sasBuilder.ToSasQueryParameters(new StorageSharedKeyCredential(blobServiceClient.AccountName, Configuration["AzureBlobStorageKey"])).ToString();
+                string BlobPath = $"{blobClient.Uri}?{sasToken}";
+
+                BlobPaths.Add(new VideoMetadata { BlobPath = BlobPath, Title = blobItem.Name });
+            }
+
+            filteredBlobPaths = new List<VideoMetadata>(BlobPaths);
+        }
+
+        private void SearchVideos()
+        {
+            if (string.IsNullOrEmpty(searchQuery))
+            {
+                filteredBlobPaths = new List<VideoMetadata>(BlobPaths);
+            }
+            else
+            {
+                filteredBlobPaths = BlobPaths.Where(url => url.Title.Contains(
+                    searchQuery, StringComparison.OrdinalIgnoreCase)).ToList();
             }
         }
     }

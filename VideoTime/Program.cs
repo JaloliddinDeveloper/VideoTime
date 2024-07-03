@@ -9,6 +9,7 @@ using VideoTime.Brokers.DateTimes;
 using VideoTime.Brokers.Loggings;
 using VideoTime.Brokers.Storages;
 using VideoTime.Components;
+using VideoTime.Services.Blobs;
 using VideoTime.Services.Foundations.VideoMetadatas;
 
 public class Program
@@ -21,7 +22,9 @@ public class Program
             .AddInteractiveServerComponents();
         
         AddTransient(builder);
-         builder.Services.AddRazorPages(options =>
+        builder.Services.AddHttpClient();
+        builder.Services.AddControllers();  
+        builder.Services.AddRazorPages(options =>
         {
             options.RootDirectory = "/Views/Pages";
         });
@@ -53,6 +56,7 @@ public class Program
         builder.Services.AddTransient<IVideoMetadataService, VideoMetadataService>();
         builder.Services.AddTransient<ILoggingBroker, LoggingBroker>();
         builder.Services.AddTransient<IDateTimeBroker, DateTimeBroker>();
+        builder.Services.AddTransient<IBlobService, BlobService>(); 
     }
 }
        
