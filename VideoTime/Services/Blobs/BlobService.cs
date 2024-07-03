@@ -11,7 +11,7 @@ using VideoTime.Models.FileResponses;
 
 namespace VideoTime.Services.Blobs
 {
-    public class BlobService:IBlobBroker
+    public class BlobService: IBlobService
     {
         private readonly IBlobBroker blobBroker;
 
@@ -26,6 +26,9 @@ namespace VideoTime.Services.Blobs
         public async Task<FileResponse> DownloadAsync(Guid fileId)=>
             await this.blobBroker.DownloadAsync(fileId);
 
+        public async Task<Stream> GetBlobStreamAsync(string blobName, string containerName)=>
+            await this.blobBroker.GetBlobStreamAsync(blobName, containerName);
+      
         public async Task<Guid> UploadAsync(Stream stream, string contentType)=>
             await this.blobBroker.UploadAsync(stream, contentType);
     }

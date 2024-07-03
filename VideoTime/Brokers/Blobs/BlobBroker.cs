@@ -29,7 +29,6 @@ namespace VideoTime.Brokers.Blobs
 
             await blobClient.DeleteAsync();
         }
-
         public async Task<FileResponse> DownloadAsync(Guid fileId)
         {
             BlobContainerClient containerClient =
@@ -60,8 +59,22 @@ namespace VideoTime.Brokers.Blobs
             await blobClient.UploadAsync(
                 stream,
                 new BlobHttpHeaders { ContentType = contentType });
-
+           
             return fileId;
+        }
+        public async Task<Stream> GetBlobStreamAsync(string blobName, string containerName)
+        {
+            var blobServiceClient = new BlobServiceClient("AzureBlobStorageConnection");
+            var blobContainerClient = blobServiceClient.GetBlobContainerClient(containerName);
+            var blobClient = blobContainerClient.GetBlobClient(blobName);
+
+            BlobDownloadInfo blobDownloadInfo = await blobClient.DownloadAsync();
+
+            var memoryStream = new MemoryStream();
+            await blobDownloadInfo.Content.CopyToAsync(memoryStream);
+            memoryStream.Position = 0;
+
+            return memoryStream;
         }
     }
 }

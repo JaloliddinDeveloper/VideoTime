@@ -12,5 +12,6 @@ namespace VideoTime.Brokers.Blobs
         Task<Guid> UploadAsync(Stream stream, string contentType);
         Task<FileResponse> DownloadAsync(Guid fileId);
         Task DeleteAsync(Guid fileId);
+        Task<Stream> GetBlobStreamAsync(string blobName, string containerName);
     }
 }

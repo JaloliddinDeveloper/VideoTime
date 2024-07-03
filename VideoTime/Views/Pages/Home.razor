@@ -1,131 +1,70 @@
 ﻿@page "/"
+@using Azure.Storage
+@using Azure.Storage.Blobs
+@using Azure.Storage.Sas
+@inject IConfiguration Configuration
 
-<div class="container">
-  
-    <img src="/Videos/hh.jpg" alt="Centered Image">
-    <h2></h2>
-</div>
-<h1>
-    <b>Hassan Habib's Videos</b>
-</h1>
-<div class="video-container">
-    @foreach (var video in videos)
-    {
-        <div class="video-item">
-            <img src="@video.Thubnail" alt="Video Thumbnail" class="video-thumbnail" onclick="showFullscreenVideo(this, '@video.BlobPath')" />
-            <video controls>
-                <source src=@video.BlobPath type="video/mp4" />
-            </video>
-            <h3 class="title-class">@video.Title</h3>
-        </div>
-    }
-</div>
-<div class="fullscreen-overlay" id="fullscreenOverlay">
-    <span class="close-button" onclick="closeFullscreenVideo()">×</span>
-    <video controls id="fullscreenVideo">
-        <source id="fullscreenVideoSource" type="video/mp4" />
-    </video>
-</div>
+<h3>Video Player</h3>
 
-<script>
-    function showFullscreenVideo(thumbnail, videoSrc) {
-        var overlay = document.getElementById('fullscreenOverlay');
-        var video = document.getElementById('fullscreenVideo');
-        var source = document.getElementById('fullscreenVideoSource');
-        source.src = videoSrc;
-        video.load();
-        overlay.style.display = 'flex';
-        video.play();
-    }
-
-    function closeFullscreenVideo() {
-        var overlay = document.getElementById('fullscreenOverlay');
-        var video = document.getElementById('fullscreenVideo');
-
-        video.pause();
-        overlay.style.display = 'none';
-    }
-</script>
-
+<input @bind="searchQuery" placeholder="Search videos..." />
+<button @onclick="SearchVideos">Search</button>
+<br />
+<hr />
+@if (filteredBlobPaths != null && filteredBlobPaths.Any())
+{
+    <div class="video-container">
+        @foreach (var BlobPath in filteredBlobPaths)
+        {
+            <div class="video-wrapper" @onclick="() => SelectVideo(BlobPath)">
+                <video class="video-only" controls width="60px" height="40px" style="margin-bottom: 20px;">
+                    <source src="@BlobPath.BlobPath" type="video/mp4">
+                </video>
+                <h><b>@BlobPath.Title</b></h>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p>Loading videos...</p>
+}
 
 <style>
-    h1{
-        margin-left:410px;
+    .video-only {
+        margin-bottom: 100pxpx;
+        padding: 0px;
     }
     .video-container {
-        margin: 50px;
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
+        margin-bottom: 50px;
     }
-
-    .video-item {
-        position: relative;
-        flex: 1 1 30%;
-        max-width: 30%;
+    .video-wrapper {
+        flex: 1 1 calc(33.333% - 10px); /* Adjust to fit three videos per row */
         box-sizing: border-box;
-        margin: 10px;
+        padding: 5px;
+        cursor: pointer;
     }
-
-        .video-item video {
-            width: 100%;
-            height: auto;
-            display: none; 
-        }
-
-    .video-thumbnail {
+    video {
         width: 100%;
         height: auto;
-        cursor: pointer;
     }
-
-    .video-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: white;
-        font-size: 24px;
-        cursor: pointer;
+    input {
+        width: 500px;
+        height: 50px;
+        border-radius: 20px;
     }
-
-    .title-class {
-        margin: 30px;
+    button {
+        width: 100px;
+        height: 50px;
+        border-radius: 20px;
     }
-    .fullscreen-overlay {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.9);
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
+    p {
+        text-align: center;
+        margin-top: 5px;
     }
-
-        .fullscreen-overlay video {
-            width: 80%;
-            height: auto;
-        }
-
-        .fullscreen-overlay .close-button {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            color: white;
-            font-size: 30px;
-            cursor: pointer;
-        }
-
-    .container
-    {margin-top:50px;
-        text-align:center;
+    p {
+        margin: 0;
     }
 </style>
