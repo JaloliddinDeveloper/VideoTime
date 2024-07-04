@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿//--------------------------------------------------
+// Copyright (c) Coalition Of Good-Hearted Engineers
+// Free To Use To Find Comfort And Peace
+//--------------------------------------------------
+using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;
 using VideoTime.Services.Blobs;
 

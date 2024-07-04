@@ -1,7 +1,7 @@
-//==================================================
+//--------------------------------------------------
 // Copyright (c) Coalition Of Good-Hearted Engineers
 // Free To Use To Find Comfort And Peace
-//==================================================
+//--------------------------------------------------
 using Azure.Storage;
 using Azure.Storage.Blobs;
 using Azure.Storage.Sas;
@@ -38,7 +38,11 @@ namespace VideoTime.Views.Pages
                 };
 
                 sasBuilder.SetPermissions(BlobSasPermissions.Read);
-                string sasToken = sasBuilder.ToSasQueryParameters(new StorageSharedKeyCredential(blobServiceClient.AccountName, Configuration["AzureBlobStorageKey"])).ToString();
+
+                string sasToken = 
+                    sasBuilder.ToSasQueryParameters(new StorageSharedKeyCredential(
+                        blobServiceClient.AccountName, Configuration["AzureBlobStorageKey"])).ToString();
+
                 string BlobPath = $"{blobClient.Uri}?{sasToken}";
 
                 BlobPaths.Add(new VideoMetadata { BlobPath = BlobPath, Title = blobItem.Name });
