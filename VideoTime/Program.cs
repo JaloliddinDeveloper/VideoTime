@@ -1,7 +1,7 @@
-//==================================================
+//--------------------------------------------------
 // Copyright (c) Coalition Of Good-Hearted Engineers
 // Free To Use To Find Comfort And Peace
-//==================================================
+//--------------------------------------------------
 
 using Azure.Storage.Blobs;
 using VideoTime.Brokers.Blobs;
