@@ -3,11 +3,12 @@
 // Free To Use To Find Comfort And Peace
 //==================================================
 
-namespace VideoTime.Models.FileResponses
+using VideoTime.Models.FileResponses;
+
+namespace VideoTime.Services.Blobs
 {
-    public record FileResponse
+    public interface IBlobService
     {
-        public Stream Stream { get; set; }
-        public string  ContentType { get; set; }
+        
     }
 }
