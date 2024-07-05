@@ -30,7 +30,7 @@ namespace VideoTime.Brokers.Blobs
             await blobClient.DeleteAsync();
         }
 
-        public async Task<FileResponse> DownloadAsync(Guid fileId)
+        public async Task<BlobContent> DownloadAsync(Guid fileId)
         {
             BlobContainerClient containerClient =
                 blobServiceClient.GetBlobContainerClient(ContainerName);
@@ -40,9 +40,9 @@ namespace VideoTime.Brokers.Blobs
             Response<BlobDownloadResult> response =
                 await blobClient.DownloadContentAsync();
 
-            FileResponse fileResponse = new FileResponse()
+            BlobContent fileResponse = new BlobContent()
                 {
-                    Stream = response.Value.Content.ToStream(),
+                    Content = response.Value.Content.ToStream(),
                     ContentType = response.Value.Details.ContentType
                 };
 

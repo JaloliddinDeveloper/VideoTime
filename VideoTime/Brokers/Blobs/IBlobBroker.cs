@@ -10,7 +10,7 @@ namespace VideoTime.Brokers.Blobs
     public interface IBlobBroker
     {
         Task<Guid> UploadAsync(Stream stream, string contentType);
-        Task<FileResponse> DownloadAsync(Guid fileId);
+        Task<BlobContent> DownloadAsync(Guid fileId);
         Task DeleteAsync(Guid fileId);
     }
 }
