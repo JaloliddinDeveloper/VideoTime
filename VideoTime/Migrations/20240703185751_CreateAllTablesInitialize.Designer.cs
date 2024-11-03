@@ -12,7 +12,7 @@ using VideoTime.Brokers.Storages;
 namespace VideoTime.Migrations
 {
     [DbContext(typeof(StorageBroker))]
-    [Migration("20240614104455_CreateAllTablesInitialize")]
+    [Migration("20240703185751_CreateAllTablesInitialize")]
     partial class CreateAllTablesInitialize
     {
         /// <inheritdoc />
@@ -32,22 +32,18 @@ namespace VideoTime.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("BlobPath")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("CreatedDate")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Thubnail")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTimeOffset>("UpdatedDate")

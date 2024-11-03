@@ -7,7 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Views\Bases\**" />
+    <Content Remove="Views\Bases\**" />
+    <EmbeddedResource Remove="Views\Bases\**" />
+    <None Remove="Views\Bases\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Azure.Storage.Blobs" Version="12.20.0" />
+    <PackageReference Include="Blazored.LocalStorage" Version="4.5.0" />
     <PackageReference Include="EFxceptions" Version="0.4.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.3">
       <PrivateAssets>all</PrivateAssets>
@@ -20,10 +28,6 @@
     </PackageReference>
     <PackageReference Include="RESTFulSense" Version="3.0.0" />
     <PackageReference Include="Xeption" Version="2.6.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Views\Bases\" />
   </ItemGroup>
 
 </Project>
